@@ -9,7 +9,7 @@ function App() {
     const fetchMobileInfo = async () => {
       try {
         const response = await fetch(
-          "https://api.ipdata.co?api-key=d45e27bf8e1bf87c780a0e478208df948ae60edd8a209022baca0e95"
+          "https://api.ipdata.co/carrier?api-key=d45e27bf8e1bf87c780a0e478208df948ae60edd8a209022baca0e95"
         );
         const data = await response.json();
         console.log(data, " line 14")
