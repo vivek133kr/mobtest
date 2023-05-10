@@ -7,25 +7,47 @@ function App() {
   const [effectiveType, setEffectiveType] = useState("");
  const [mobileInfo, setMobileInfo] = useState(null);
   useEffect(() => {
-      const getMobileInfo = () => {
-        const { userAgent, platform } = navigator;
-        console.log(navigator, " applying new check")
-        // Check if the user is on a mobile device
-        const isMobile = /Mobile/.test(userAgent);
+     const getMobileInfo = () => {
+       const { userAgent, platform } = navigator;
 
-        // Get the device information
-        const device = isMobile ? "Mobile Device" : "Desktop";
+       // Check if the user is on a mobile device
+       const isMobile = /Mobile/.test(userAgent);
 
-        // Set the mobile information in state
-        setMobileInfo({
-          userAgent,
-          platform,
-          isMobile,
-          device,
-        });
-      };
+       // Get the device information
+       const device = isMobile ? "Mobile Device" : "Desktop";
 
-      getMobileInfo();
+       // Extract mobile model from user agent
+       const modelStartIndex = userAgent.indexOf("(") + 1;
+       const modelEndIndex = userAgent.indexOf(")");
+       const model = isMobile
+         ? userAgent.substring(modelStartIndex, modelEndIndex)
+         : "";
+
+       // Extract operating system information from user agent
+       const osStartIndex = userAgent.indexOf("(") + 1;
+       const osEndIndex = userAgent.indexOf(")");
+       const osInfo = isMobile
+         ? userAgent.substring(osStartIndex, osEndIndex)
+         : "";
+       const [operatingSystem, operatingSystemVersion] = osInfo
+         .split(";")
+         .map((info) => info.trim());
+
+       // Set the mobile information in state
+       setMobileInfo({
+         userAgent,
+         platform,
+         isMobile,
+         device,
+         model,
+         operatingSystem,
+         operatingSystemVersion,
+       });
+     };
+
+     getMobileInfo();
+
+   
     const handleNetworkChange = () => {
       const { connection } = navigator;
       console.log(navigator, "checking navigaor")
@@ -75,7 +97,16 @@ function App() {
           <p>User Agent: {mobileInfo.userAgent}</p>
           <p>Platform: {mobileInfo.platform}</p>
           <p>Is Mobile: {mobileInfo.isMobile ? "Yes" : "No"}</p>
-          <p>Device: {mobileInfo.device}</p>
+          {mobileInfo.isMobile && (
+            <div>
+              <p>Device: {mobileInfo.device}</p>
+              <p>Model: {mobileInfo.model}</p>
+              <p>Operating System: {mobileInfo.operatingSystem}</p>
+              <p>
+                Operating System Version: {mobileInfo.operatingSystemVersion}
+              </p>
+            </div>
+          )}
         </div>
       ) : (
         <p>Loading mobile information...</p>
