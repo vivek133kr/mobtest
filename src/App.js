@@ -35,7 +35,7 @@ function App() {
         );
         const data = await response.json();
         console.log(data, " line 14")
-        setMobileOperator(data.mobile.carrier || "Unknown");
+        setMobileOperator(data.carrier.name || "Unknown");
       } catch (error) {
         console.error("Error fetching mobile information:", error);
       }
