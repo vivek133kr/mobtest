@@ -5,8 +5,27 @@ function App() {
   const [mobileOperator, setMobileOperator] = useState("");
   const [networkType, setNetworkType] = useState("");
   const [effectiveType, setEffectiveType] = useState("");
-
+ const [mobileInfo, setMobileInfo] = useState(null);
   useEffect(() => {
+      const getMobileInfo = () => {
+        const { userAgent, platform } = navigator;
+
+        // Check if the user is on a mobile device
+        const isMobile = /Mobile/.test(userAgent);
+
+        // Get the device information
+        const device = isMobile ? "Mobile Device" : "Desktop";
+
+        // Set the mobile information in state
+        setMobileInfo({
+          userAgent,
+          platform,
+          isMobile,
+          device,
+        });
+      };
+
+      getMobileInfo();
     const handleNetworkChange = () => {
       const { connection } = navigator;
       console.log(navigator, "checking navigaor")
@@ -26,6 +45,7 @@ function App() {
       navigator.connection.removeEventListener("change", handleNetworkChange);
     };
   }, []);
+  
   useEffect(() => {
    
     const fetchMobileInfo = async () => {
@@ -49,6 +69,17 @@ function App() {
       <p>Mobile Operator: {mobileOperator}</p>
       <p>Network Type: {networkType}</p>
       <p>Effective Network Type: {effectiveType}</p>
+      {mobileInfo ? (
+        <div>
+          <h2>Mobile Information:</h2>
+          <p>User Agent: {mobileInfo.userAgent}</p>
+          <p>Platform: {mobileInfo.platform}</p>
+          <p>Is Mobile: {mobileInfo.isMobile ? "Yes" : "No"}</p>
+          <p>Device: {mobileInfo.device}</p>
+        </div>
+      ) : (
+        <p>Loading mobile information...</p>
+      )}
     </div>
   );
 }
