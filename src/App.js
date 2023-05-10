@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
       const getMobileInfo = () => {
         const { userAgent, platform } = navigator;
-        console.log(navigator, " applying new check)
+        console.log(navigator, " applying new check")
         // Check if the user is on a mobile device
         const isMobile = /Mobile/.test(userAgent);
 
